@@ -1,9 +1,0 @@
-@startuml
-abstract class SortExecutable {
-    # items : int[]
-    # SortExecutable(items:IEnumerable<int>)
-    + Items : IReadOnlyCollection<int> <<get>> <<set>>
-    + {abstract} Sort() : void
-}
-Observable <|-- SortExecutable
-@enduml

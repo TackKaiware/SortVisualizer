@@ -1,5 +1,0 @@
-@startuml
-!include .\\IObserver.puml
-!include .\\Observable.puml
-!include .\\SortExecutable.puml
-@enduml

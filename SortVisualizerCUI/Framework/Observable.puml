@@ -1,8 +1,0 @@
-@startuml
-abstract class Observable {
-    - <<readonly>> observers : List<IObserver>
-    + Add(observer:IObserver) : void
-    # Update() : void
-    - NotifyObservers() : void
-}
-@enduml

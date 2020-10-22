@@ -1,5 +1,0 @@
-@startuml
-interface IObserver {
-    Update(observable:Observable) : void
-}
-@enduml

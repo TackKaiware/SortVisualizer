@@ -1,6 +1,0 @@
-@startuml
-class TextControl {
-    - <<const>> WaitTime_ms : int = 100
-    + Text : string <<set>>
-}
-@enduml
