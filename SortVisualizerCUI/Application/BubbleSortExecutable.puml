@@ -1,0 +1,7 @@
+@startuml
+class BubbleSortExecutable {
+    + BubbleSortExecutable(items:IEnumerable<int>)
+    + <<override>> Sort() : void
+}
+SortExecutable <|-- BubbleSortExecutable
+@enduml

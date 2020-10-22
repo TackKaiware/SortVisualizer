@@ -1,0 +1,8 @@
+@startuml
+class SortObserver {
+    - <<readonly>> barGraphTextControl : TextControl
+    + DataSource : SortExecutable <<set>>
+    + Update(observable:Observable) : void
+}
+IObserver <|-- SortObserver
+@enduml
