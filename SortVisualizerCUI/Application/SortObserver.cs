@@ -10,7 +10,7 @@ namespace SortVisualizerCUI.Application
     public class SortObserver : IObserver
     {
         /// <summary>
-        /// ここにソート実行体を設定し紐づける。
+        /// ソート実行体（通知する側）を設定し、自分自身を登録する。
         /// </summary>
         public SortExecutable DataSource
         {
@@ -18,7 +18,7 @@ namespace SortVisualizerCUI.Application
         }
 
         /// <summary>
-        /// ソート実行オブジェクトから変更通知を受け取った時の更新処理。
+        /// ソート実行体から変更通知を受け取った時の更新処理。
         /// </summary>
         /// <param name="observable"></param>
         public void Update( Observable observable )
