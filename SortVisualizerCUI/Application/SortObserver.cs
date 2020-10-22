@@ -14,7 +14,7 @@ namespace SortVisualizerCUI.Application
         /// </summary>
         public SortExecutable DataSource
         {
-            set => value.Add( this );
+            set => value.AddObserver( this );
         }
 
         /// <summary>

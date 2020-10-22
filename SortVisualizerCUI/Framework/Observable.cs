@@ -16,13 +16,13 @@ namespace SortVisualizerCUI.Framework
         ///  通知を受ける側を追加する。
         /// </summary>
         /// <param name="observer"></param>
-        public void Add( IObserver observer ) => observers.Add( observer );
+        public void AddObserver( IObserver observer ) => observers.Add( observer );
 
         /// <summary>
         ///  通知を受ける側を削除する。
         /// </summary>
         /// <param name="observer"></param>
-        public void Remove( IObserver observer ) => observers.Remove( observer );
+        public void RemoveObserver( IObserver observer ) => observers.Remove( observer );
 
         /// <summary>
         ///  通知を受ける側へ自身の状態変更を知らせる。
