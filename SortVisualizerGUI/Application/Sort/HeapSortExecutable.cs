@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Threading;
 
 namespace SortVisualizerGUI.Application.Sort
 {
@@ -14,27 +15,28 @@ namespace SortVisualizerGUI.Application.Sort
         /// コンストラクタ
         /// </summary>
         /// <param name="items"></param>
-        public HeapSortExecutable( IEnumerable<T> items ) : base( items ) { }
+        public HeapSortExecutable( IEnumerable<T> items = null ) : base( items ) { }
 
         public override string Name => "ヒープソート";
 
         /// <summary>
         /// ソートの実行。要素を入れ替えるたびに通知を受ける側へ状態変更を知らせる。
         /// </summary>
-        public async override Task SortAsync()
+        protected override void SortImplementation()
         {
-            var array = items.Clone() as T[];
+            var array = Items.ToArray();
             int i = 0;
             while ( i < array.Length )
             {
-                await Task.Delay( DelayTime_ms );
+                Thread.Sleep( DelayTime_ms );
                 UpHeap( array, i++ );
             }
             while ( --i > 0 )
             {
-                (array[0], array[i]) = (array[i], array[0]);
+                //(array[0], array[i]) = (array[i], array[0]);
+                Swap( ref array[0], ref array[i] );
 
-                await Task.Delay( DelayTime_ms );
+                Thread.Sleep( DelayTime_ms );
                 DownHeap( array, i - 1 );
             }
             Items = array;
@@ -45,9 +47,9 @@ namespace SortVisualizerGUI.Application.Sort
             while ( n != 0 )
             {
                 int parent = ( n - 1 ) / 2;
-                if ( array[n].CompareTo( array[parent] ) > 0 )
+                if ( Compare( array[n], array[parent] ) > 0 )
                 {
-                    (array[n], array[parent]) = (array[parent], array[n]);
+                    Swap( ref array[n], ref array[parent] );
                     n = parent;
                     Items = array;
                 }
@@ -66,13 +68,13 @@ namespace SortVisualizerGUI.Application.Sort
             {
                 int child = 2 * parent + 1;
                 if ( child > n ) break;
-                if ( ( child < n ) && array[child].CompareTo( array[child + 1] ) < 0 )
+                if ( ( child < n ) && Compare( array[child], array[child + 1] ) < 0 )
                 {
                     child++;
                 }
-                if ( array[parent].CompareTo( array[child] ) < 0 )
+                if ( Compare( array[parent], array[child] ) < 0 )
                 {
-                    (array[parent], array[child]) = (array[child], array[parent]);
+                    Swap( ref array[parent], ref array[child] );
                     parent = child;
                     Items = array;
                 }

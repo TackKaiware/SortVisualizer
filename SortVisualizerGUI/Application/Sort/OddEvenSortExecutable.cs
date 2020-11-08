@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Threading;
 
 namespace SortVisualizerGUI.Application.Sort
 {
@@ -14,16 +15,16 @@ namespace SortVisualizerGUI.Application.Sort
         /// コンストラクタ
         /// </summary>
         /// <param name="items"></param>
-        public OddEvenSortExecutable( IEnumerable<T> items ) : base( items ) { }
+        public OddEvenSortExecutable( IEnumerable<T> items = null ) : base( items ) { }
 
         public override string Name => "奇遇転置ソート";
 
         /// <summary>
         /// ソートの実行。要素を入れ替えるたびに通知を受ける側へ状態変更を知らせる。
         /// </summary>
-        public override async Task SortAsync()
+        protected override void SortImplementation()
         {
-            var array = items.Clone() as T[];
+            var array = Items.ToArray();
             bool isSwapped;
             do
             {
@@ -32,10 +33,10 @@ namespace SortVisualizerGUI.Application.Sort
                 // (偶数, 奇数)ペアの比較変換
                 for ( int i = 0; i < array.Length - 1; i += 2 )
                 {
-                    if ( array[i + 1].CompareTo( array[i] ) < 0 )
+                    if ( Compare( array[i + 1], array[i] ) < 0 )
                     {
-                        (array[i + 1], array[i]) = (array[i], array[i + 1]);
-                        await Task.Delay( DelayTime_ms );
+                        Swap( ref array[i + 1], ref array[i] );
+                        Thread.Sleep( DelayTime_ms );
                         Items = array;
                         isSwapped = true;
                     }
@@ -44,10 +45,10 @@ namespace SortVisualizerGUI.Application.Sort
                 // (奇数, 偶数)ペアの比較変換
                 for ( int i = 1; i < array.Length - 1; i += 2 )
                 {
-                    if ( array[i + 1].CompareTo( array[i] ) < 0 )
+                    if ( Compare( array[i + 1], array[i] ) < 0 )
                     {
-                        (array[i + 1], array[i]) = (array[i], array[i + 1]);
-                        await Task.Delay( DelayTime_ms );
+                        Swap( ref array[i + 1], ref array[i] );
+                        Thread.Sleep( DelayTime_ms );
                         Items = array;
 
                         isSwapped = true;

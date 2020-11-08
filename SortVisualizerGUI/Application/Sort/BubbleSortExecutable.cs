@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using System.Threading;
 
 namespace SortVisualizerGUI.Application.Sort
 {
@@ -13,27 +14,27 @@ namespace SortVisualizerGUI.Application.Sort
         /// コンストラクタ
         /// </summary>
         /// <param name="items"></param>
-        public BubbleSortExecutable( IEnumerable<T> items ) : base( items ) { }
+        public BubbleSortExecutable( IEnumerable<T> items = null ) : base( items ) { }
 
         public override string Name => "バブルソート";
 
         /// <summary>
         /// ソートの実行。要素を入れ替えるたびに通知を受ける側へ状態変更を知らせる。
         /// </summary>
-        public override async Task SortAsync()
+        protected override void SortImplementation()
         {
-            var array = items.Clone() as T[];
+            var array = Items.ToArray();
             for ( int i = 0; i < array.Length - 1; i++ )
             {
                 for ( int j = array.Length - 1; i < j; j-- )
                 {
-                    if ( array[j].CompareTo( array[j - 1] ) < 0 )
+                    if ( Compare( array[j], array[j - 1] ) < 0 )
                     {
                         // System.ValueTapleの機能による要素の交換
-                        (array[j], array[j - 1]) = (array[j - 1], array[j]);
+                        Swap( ref array[j], ref array[j - 1] );
 
                         // ★ココ！で通知を受ける側へ状態変更を知らせる
-                        await Task.Delay( DelayTime_ms );
+                        Thread.Sleep( DelayTime_ms );
                         Items = array;
                     }
                 }
