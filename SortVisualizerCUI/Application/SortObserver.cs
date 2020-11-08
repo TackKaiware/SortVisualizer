@@ -23,10 +23,10 @@ namespace SortVisualizerCUI.Application
         /// <param name="observable"></param>
         public void Update( Observable observable )
         {
-            if( observable is SortExecutable sortExecutable )
+            if ( observable is SortExecutable sortExecutable )
             {
                 var str = string.Empty;
-                foreach( var n in sortExecutable.Items )
+                foreach ( var n in sortExecutable.Items )
                 {
                     // 現在のソートの状態を数値の並び→横棒グラフ状の文字列に変換する。
                     str += new string( Enumerable.Repeat( "■", n ).SelectMany( x => x ).ToArray() )

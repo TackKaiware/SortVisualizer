@@ -16,6 +16,7 @@ namespace SortVisualizerCUI.Application
         public static void DisplaySingleFrame( string value )
         {
             Console.Clear();
+            Console.SetCursorPosition( 0, 0 );
             Console.WriteLine( value );
 
             Thread.Sleep( WaitTime_ms );
