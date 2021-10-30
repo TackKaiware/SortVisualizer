@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace SortVisualizerGUI.Application
-{
+namespace SortVisualizerGUI.Application {
+
     /// <summary>
     /// Color構造体に関する静的メソッドを提供するクラス
     /// </summary>
-    public static class ColorHelper
-    {
+    public static class ColorHelper {
+
         /// <summary>
         ///  グラデーション色を生成する
         /// </summary>
@@ -16,8 +16,7 @@ namespace SortVisualizerGUI.Application
         /// <param name="to"></param>
         /// <param name="totalNumberOfColors"></param>
         /// <returns></returns>
-        public static IEnumerable<Color> CreateColorGradient( Color from, Color to, int totalNumberOfColors )
-        {
+        public static IEnumerable<Color> CreateColorGradient( Color from, Color to, int totalNumberOfColors ) {
             double diffA = to.A - from.A;
             double diffR = to.R - from.R;
             double diffG = to.G - from.G;
@@ -32,8 +31,7 @@ namespace SortVisualizerGUI.Application
 
             yield return from;
 
-            for ( var i = 1; i < steps; ++i )
-            {
+            for ( var i = 1; i < steps; ++i ) {
                 yield return Color.FromArgb(
                     c( from.A, stepA ),
                     c( from.R, stepR ),

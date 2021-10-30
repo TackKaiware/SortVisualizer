@@ -1,10 +1,10 @@
-﻿namespace SortVisualizerGUI.Framework
-{
+﻿namespace SortVisualizerGUI.Framework {
+
     /// <summary>
     /// 通知を受ける側のインターフェース定義
     /// </summary>
-    public interface IObserver
-    {
+    public interface IObserver {
+
         /// <summary>
         ///  通知する側から状態変更の知らせを受けた時の更新処理
         /// </summary>

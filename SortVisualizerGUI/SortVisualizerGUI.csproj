@@ -52,11 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Application\Sort\BubbleSortExecutable.cs" />
+    <Compile Include="Application\Sort\BubbleSort.cs" />
     <Compile Include="Application\ColorHelper.cs" />
-    <Compile Include="Application\Sort\OddEvenSortExecutable.cs" />
-    <Compile Include="Application\Sort\SelectionSortExecutable.cs" />
-    <Compile Include="Application\Sort\SortExecutableBase.cs" />
+    <Compile Include="Application\Sort\OddEvenSort.cs" />
+    <Compile Include="Application\Sort\QuickSort.cs" />
+    <Compile Include="Application\Sort\SelectionSort.cs" />
+    <Compile Include="Application\Sort\ShellSort.cs" />
+    <Compile Include="Application\Sort\Sort.cs" />
     <Compile Include="Application\Viewer\GraphViewer.cs" />
     <Compile Include="Application\Viewer\CompareCountViewer.cs" />
     <Compile Include="Form1.cs">
@@ -67,7 +69,7 @@
     </Compile>
     <Compile Include="Framework\IObserver.cs" />
     <Compile Include="Framework\Observable.cs" />
-    <Compile Include="Application\Sort\HeapSortExecutable.cs" />
+    <Compile Include="Application\Sort\HeapSort.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application\Viewer\SwapCountViewer.cs" />

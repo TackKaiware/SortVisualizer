@@ -1,5 +1,6 @@
 ﻿using SortVisualizerGUI.Application.Sort;
 using SortVisualizerGUI.Application.Viewer;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,23 +8,28 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace SortVisualizerGUI
-{
-    public partial class Form1 : Form
-    {
+namespace SortVisualizerGUI {
+
+    public partial class Form1 :Form {
+
+        #region フィールド
+
+        private const int DataCount = 200;  // ソート対象のデータ個数
+
+        #endregion
+
         #region フィールド
 
         private GraphViewer graphViewer;
         private CompareCountViewer compareCountViewer;
         private SwapCountViewer swapCountViewer;
-        private SortExecutableBase<int> sortExecutable;
+        private Sort<int> sortObj;
 
         #endregion
 
         #region 初期化
 
-        public Form1()
-        {
+        public Form1() {
             InitializeComponent();
         }
 
@@ -36,8 +42,7 @@ namespace SortVisualizerGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Form1_Load( object sender, System.EventArgs e )
-        {
+        private void Form1_Load( object sender, System.EventArgs e ) {
             Cmb_SortAlgorythm_Initialize();
             Prepare();
         }
@@ -51,11 +56,11 @@ namespace SortVisualizerGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Btn_Run_Click( object sender, EventArgs e )
-        {
+        private void Btn_Run_Click( object sender, EventArgs e ) {
             Prepare();
             backgroundWorker.RunWorkerAsync();
             btn_Run.Enabled = false;
+            cmb_SortAlgorythm.Enabled = false;
         }
 
         #endregion
@@ -65,20 +70,19 @@ namespace SortVisualizerGUI
         /// <summary>
         /// コンボボックスの初期化処理
         /// </summary>
-        private void Cmb_SortAlgorythm_Initialize()
-        {
-            // ソートアルゴリズム選択ComboBox用データ作成
-            var data = GenerateRandomNumber( pbx_GraphView.Height / 2 );
-            cmb_SortAlgorythm.DataSource = new List<SortExecutableBase<int>>
+        private void Cmb_SortAlgorythm_Initialize() {
+            cmb_SortAlgorythm.DataSource = new List<Sort<int>>
             {
-                new BubbleSortExecutable<int>(),
-                new SelectionSortExecutable<int>(),
-                new OddEvenSortExecutable<int>(),
-                new HeapSortExecutable<int>(),
+                new BubbleSort<int>(),
+                new SelectionSort<int>(),
+                new OddEvenSort<int>(),
+                new HeapSort<int>(),
+                new QuickSort<int>(),
+                new ShellSort<int>(),
             }
             .OrderBy( x => x.Name ).ToList();
 
-            cmb_SortAlgorythm.DisplayMember = nameof( sortExecutable.Name );
+            cmb_SortAlgorythm.DisplayMember = nameof( sortObj.Name );
             cmb_SortAlgorythm.SelectedIndex = 0;
         }
 
@@ -87,10 +91,8 @@ namespace SortVisualizerGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Cmb_SortAlgorythm_SelectedIndexChanged( object sender, EventArgs e )
-        {
-            sortExecutable = cmb_SortAlgorythm.SelectedItem as SortExecutableBase<int>;
-        }
+        private void Cmb_SortAlgorythm_SelectedIndexChanged( object sender, EventArgs e ) =>
+            sortObj = cmb_SortAlgorythm.SelectedItem as Sort<int>;
 
         #endregion
 
@@ -101,10 +103,14 @@ namespace SortVisualizerGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BackgroundWorker_DoWork( object sender, DoWorkEventArgs e )
-        {
-            // ソートの実行（時間のかかる処理）
-            sortExecutable.Sort();
+        private void BackgroundWorker_DoWork( object sender, DoWorkEventArgs e ) {
+            // 処理が遅いソートはデータ量を半分に減らす
+            int count = DataCount;
+            if ( ( sortObj is BubbleSort<int> ) ||
+                 ( sortObj is OddEvenSort<int> ) ) {
+                count /= 2;
+            }
+            sortObj.Execute( GenerateRandomNumber( count ) );
         }
 
         /// <summary>
@@ -112,9 +118,9 @@ namespace SortVisualizerGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BackgroundWorker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e )
-        {
+        private void BackgroundWorker_RunWorkerCompleted( object sender, RunWorkerCompletedEventArgs e ) {
             btn_Run.Enabled = true;
+            cmb_SortAlgorythm.Enabled = true;
         }
 
         #endregion
@@ -136,17 +142,19 @@ namespace SortVisualizerGUI
         /// <summary>
         /// ソートデータ・ビューの準備
         /// </summary>c
-        private void Prepare()
-        {
-            // ソート実行体の初期化
-            sortExecutable = cmb_SortAlgorythm.SelectedItem as SortExecutableBase<int>;
-            //sortExecutable.Items = GenerateRandomNumber( pbx_GraphView.ClientSize.Height / 5 ).ToArray();
-            sortExecutable.Items = GenerateRandomNumber( 100 ).ToArray();
+        private void Prepare() {
+            // ソートオブジェクトの初期化
+            sortObj = cmb_SortAlgorythm.SelectedItem as Sort<int>;
 
             // 各ビューの初期化
-            graphViewer = new GraphViewer( pbx_GraphView ) { DataSource = sortExecutable };
-            compareCountViewer = new CompareCountViewer( lbl_CompareCount ) { DataSource = sortExecutable };
-            swapCountViewer = new SwapCountViewer( lbl_SwapCount ) { DataSource = sortExecutable };
+            graphViewer = new GraphViewer( pbx_GraphView, Color.Salmon, Color.Yellow, Color.YellowGreen );
+            graphViewer.SetDataSource( sortObj );
+
+            compareCountViewer = new CompareCountViewer( lbl_CompareCount );
+            compareCountViewer.SetDataSource( sortObj );
+
+            swapCountViewer = new SwapCountViewer( lbl_SwapCount );
+            swapCountViewer.SetDataSource( sortObj );
         }
     }
 }

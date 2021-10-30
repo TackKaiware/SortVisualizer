@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace SortVisualizerGUI.Framework
-{
+namespace SortVisualizerGUI.Framework {
+
     /// <summary>
     /// 通知する側の抽象クラス
     /// </summary>
-    public abstract class Observable
-    {
+    public abstract class Observable {
+
         /// <summary>
         ///  通知を受ける側への参照。
         /// </summary>
