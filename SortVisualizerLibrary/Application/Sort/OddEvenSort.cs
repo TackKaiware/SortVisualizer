@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SortVisualizerGUI.Application.Sort {
+namespace SortVisualizerLibrary {
 
     /// <summary>
     /// 奇遇転置ソート
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class OddEvenSort<T> :Sort<T> where T : IComparable<T> {
+    public class OddEvenSort<T> :SortObject<T> where T : IComparable<T> {
         public override string Name => "奇遇転置ソート";
 
         /// <summary>

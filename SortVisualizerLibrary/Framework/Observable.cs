@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SortVisualizerGUI.Framework {
+namespace SortVisualizerLibrary {
 
     /// <summary>
     /// 通知する側の抽象クラス
@@ -10,7 +10,7 @@ namespace SortVisualizerGUI.Framework {
         /// <summary>
         ///  通知を受ける側への参照。
         /// </summary>
-        private readonly List<IObserver> observers = new List<IObserver>();
+        private readonly List<IObserver> observers = new();
 
         /// <summary>
         ///  通知を受ける側を追加する。

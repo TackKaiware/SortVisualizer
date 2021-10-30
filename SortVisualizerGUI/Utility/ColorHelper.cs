@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 
-namespace SortVisualizerGUI.Application {
+namespace SortVisualizerGUI.Uyility {
 
     /// <summary>
     /// Color構造体に関する静的メソッドを提供するクラス

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SortVisualizerGUI.Application.Sort {
+namespace SortVisualizerLibrary {
 
     /// <summary>
     /// ヒープソート
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class HeapSort<T> :Sort<T> where T : IComparable<T> {
+    public class HeapSort<T> :SortObject<T> where T : IComparable<T> {
         public override string Name => "ヒープソート";
 
         /// <summary>

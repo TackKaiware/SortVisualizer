@@ -1,12 +1,13 @@
-﻿using SortVisualizerGUI.Application.Sort;
-using SortVisualizerGUI.Framework;
+﻿using SortVisualizerGUI.Uyility;
+
+using SortVisualizerLibrary;
 
 using System;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace SortVisualizerGUI.Application.Viewer {
+namespace SortVisualizerGUI.Viewer {
 
     /// <summary>
     /// ソートの状態を横棒グラフで表示するクラス
@@ -33,7 +34,7 @@ namespace SortVisualizerGUI.Application.Viewer {
         /// <summary>
         /// ソートオブジェクト（通知する側）を設定し、自分自身を登録する。
         /// </summary>
-        public void SetDataSource( Sort<int> value ) {
+        public void SetDataSource( SortObject<int> value ) {
             value.AddObserver( this );
 
             // ソートオブジェクトの初期状態をピクチャボックスに表示するため
@@ -45,7 +46,7 @@ namespace SortVisualizerGUI.Application.Viewer {
         /// </summary>
         /// <param name="observable"></param>
         public void Update( Observable observable ) {
-            if ( observable is Sort<int> sortObj ) {
+            if ( observable is SortObject<int> sortObj ) {
                 var items = sortObj.Items.ToArray();
                 if ( !itemsPrev.SequenceEqual( items ) ) {
                     // 初期設定
@@ -54,8 +55,14 @@ namespace SortVisualizerGUI.Application.Viewer {
 
                     // 棒グラフの色の作成
                     var gradationCount = 2;
-                    var barColors1 = ColorHelper.CreateColorGradient( barColor1, barColor2, items.Length / gradationCount );
-                    var barColors2 = ColorHelper.CreateColorGradient( barColor2, barColor3, items.Length / gradationCount );
+                    int count = items.Length / gradationCount;
+                    var barColors1 = ColorHelper.CreateColorGradient( barColor1, barColor2, count );
+                    if ( ( items.Length & 1 ) == 1 ) {
+                        // データ個数が奇数の時、範囲外アクセスを回避するため
+                        // 色オブジェクトの配列にを1個要素を追加する。
+                        count += 1;
+                    }
+                    var barColors2 = ColorHelper.CreateColorGradient( barColor2, barColor3, count );
                     var barColors = barColors1.Concat( barColors2 ).ToArray();
 
                     // 棒の幅・高さ

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SortVisualizerGUI.Application.Sort {
+namespace SortVisualizerLibrary {
 
     /// <summary>
     /// クイックソート
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class QuickSort<T> :Sort<T> where T : IComparable<T> {
+    public class QuickSort<T> :SortObject<T> where T : IComparable<T> {
         public override string Name => "クイックソート";
 
         /// <summary>

@@ -1,9 +1,11 @@
-﻿using SortVisualizerGUI.Application.Sort;
-using SortVisualizerGUI.Application.Viewer;
+﻿using SortVisualizerGUI.Viewer;
+
+using SortVisualizerLibrary;
 
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,16 +16,10 @@ namespace SortVisualizerGUI {
 
         #region フィールド
 
-        private const int DataCount = 200;  // ソート対象のデータ個数
-
-        #endregion
-
-        #region フィールド
-
         private GraphViewer graphViewer;
         private CompareCountViewer compareCountViewer;
         private SwapCountViewer swapCountViewer;
-        private Sort<int> sortObj;
+        private SortObject<int> sortObj;
 
         #endregion
 
@@ -31,6 +27,9 @@ namespace SortVisualizerGUI {
 
         public Form1() {
             InitializeComponent();
+
+            // フォームを画面中央に表示
+            StartPosition = FormStartPosition.CenterScreen;
         }
 
         #endregion
@@ -43,8 +42,11 @@ namespace SortVisualizerGUI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Form1_Load( object sender, System.EventArgs e ) {
+            // コンボボックスを初期化
             Cmb_SortAlgorythm_Initialize();
-            Prepare();
+
+            // ビューの初期化
+            InintializeViewers();
         }
 
         #endregion
@@ -57,7 +59,7 @@ namespace SortVisualizerGUI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Btn_Run_Click( object sender, EventArgs e ) {
-            Prepare();
+            InintializeViewers();
             backgroundWorker.RunWorkerAsync();
             btn_Run.Enabled = false;
             cmb_SortAlgorythm.Enabled = false;
@@ -71,7 +73,7 @@ namespace SortVisualizerGUI {
         /// コンボボックスの初期化処理
         /// </summary>
         private void Cmb_SortAlgorythm_Initialize() {
-            cmb_SortAlgorythm.DataSource = new List<Sort<int>>
+            cmb_SortAlgorythm.DataSource = new List<SortObject<int>>
             {
                 new BubbleSort<int>(),
                 new SelectionSort<int>(),
@@ -92,7 +94,7 @@ namespace SortVisualizerGUI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void Cmb_SortAlgorythm_SelectedIndexChanged( object sender, EventArgs e ) =>
-            sortObj = cmb_SortAlgorythm.SelectedItem as Sort<int>;
+            sortObj = cmb_SortAlgorythm.SelectedItem as SortObject<int>;
 
         #endregion
 
@@ -104,12 +106,14 @@ namespace SortVisualizerGUI {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void BackgroundWorker_DoWork( object sender, DoWorkEventArgs e ) {
-            // 処理が遅いソートはデータ量を半分に減らす
-            int count = DataCount;
-            if ( ( sortObj is BubbleSort<int> ) ||
-                 ( sortObj is OddEvenSort<int> ) ) {
-                count /= 2;
-            }
+            int count = pbx_GraphView.ClientSize.Height;
+            count = sortObj switch {
+                // 処理が遅いソートはデータ量を減らす
+                BubbleSort<int> => count / 4,
+                OddEvenSort<int> => count / 4,
+                SelectionSort<int> => count / 2,
+                _ => count,
+            };
             sortObj.Execute( GenerateRandomNumber( count ) );
         }
 
@@ -130,24 +134,28 @@ namespace SortVisualizerGUI {
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-        private IEnumerable<int> GenerateRandomNumber( int count ) => Enumerable.Range( 1, count ).OrderBy( _ => Guid.NewGuid() );
+        private static IEnumerable<int> GenerateRandomNumber( int count ) => Enumerable.Range( 1, count ).OrderBy( _ => Guid.NewGuid() );
 
         /// <summary>
         /// 降順の数値データを生成する
         /// </summary>
         /// <param name="count"></param>
         /// <returns></returns>
-        private IEnumerable<int> GenerateDescendingOrderedNumber( int count ) => Enumerable.Range( 1, count ).OrderByDescending( _ => _ );
+        private static IEnumerable<int> GenerateDescendingOrderedNumber( int count ) => Enumerable.Range( 1, count ).OrderByDescending( _ => _ );
 
         /// <summary>
-        /// ソートデータ・ビューの準備
+        /// 各コントロールの初期化
         /// </summary>c
-        private void Prepare() {
+        private void InintializeViewers() {
             // ソートオブジェクトの初期化
-            sortObj = cmb_SortAlgorythm.SelectedItem as Sort<int>;
+            sortObj = cmb_SortAlgorythm.SelectedItem as SortObject<int>;
 
             // 各ビューの初期化
-            graphViewer = new GraphViewer( pbx_GraphView, Color.Salmon, Color.Yellow, Color.YellowGreen );
+            int x = 50;
+            var barColor1 = Color.FromArgb( 255, x, x );
+            var barColor2 = Color.FromArgb( x, 255, x );
+            var barColor3 = Color.FromArgb( x, x, 255 );
+            graphViewer = new GraphViewer( pbx_GraphView, barColor1, barColor2, barColor3 );
             graphViewer.SetDataSource( sortObj );
 
             compareCountViewer = new CompareCountViewer( lbl_CompareCount );

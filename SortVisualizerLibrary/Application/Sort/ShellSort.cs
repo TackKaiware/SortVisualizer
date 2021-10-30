@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SortVisualizerGUI.Application.Sort {
+namespace SortVisualizerLibrary {
 
     /// <summary>
     /// シェルソート実行体
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class ShellSort<T> :Sort<T> where T : IComparable<T> {
+    public class ShellSort<T> :SortObject<T> where T : IComparable<T> {
         public override string Name => "シェルソート";
 
         protected override void ExecuteSort( IEnumerable<T> items ) {

@@ -1,27 +1,17 @@
-﻿using SortVisualizerGUI.Framework;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-namespace SortVisualizerGUI.Application.Sort {
+namespace SortVisualizerLibrary {
 
     /// <summary>
     /// ソートクラス（抽象）
     /// </summary>
-    public abstract class Sort<T> :Observable where T : IComparable<T> {
-        protected const int DelayTime_ms = 2;
+    public abstract class SortObject<T> :Observable where T : IComparable<T> {
+        protected const int DelayTime_ms = 0;
 
-        private T[] items;
-
-        /// <summary>
-        /// コンストラクタ。ソート対象のデータで初期化する。
-        /// </summary>
-        /// <param name="items"></param>
-        protected Sort( IEnumerable<T> items = null ) {
-            this.items = items?.ToArray() ?? Array.Empty<T>();
-        }
+        private T[] items = Array.Empty<T>();
 
         /// <summary>
         /// 比較回数。
@@ -58,6 +48,7 @@ namespace SortVisualizerGUI.Application.Sort {
         /// ソートの実行。比較回数と交換回数をリセットしてからソートを実行する。
         /// </summary>
         public void Execute( IEnumerable<T> items ) {
+            Items = items.ToArray();
             CompareCount = 0;
             SwapCount = 0;
             ExecuteSort( items );

@@ -1,4 +1,4 @@
-﻿namespace SortVisualizerGUI.Framework {
+﻿namespace SortVisualizerLibrary {
 
     /// <summary>
     /// 通知を受ける側のインターフェース定義

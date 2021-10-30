@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SortVisualizerGUI.Application.Sort {
+namespace SortVisualizerLibrary {
 
     /// <summary>
     ///  選択ソートオブジェクト
     /// </summary>
-    public class SelectionSort<T> :Sort<T> where T : IComparable<T> {
+    public class SelectionSort<T> :SortObject<T> where T : IComparable<T> {
         public override string Name => "選択ソート";
 
         /// <summary>

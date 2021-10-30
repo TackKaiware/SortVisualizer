@@ -1,9 +1,8 @@
-﻿using SortVisualizerGUI.Application.Sort;
-using SortVisualizerGUI.Framework;
+﻿using SortVisualizerLibrary;
 
 using System.Windows.Forms;
 
-namespace SortVisualizerGUI.Application.Viewer {
+namespace SortVisualizerGUI.Viewer {
 
     internal class CompareCountViewer :IObserver {
 
@@ -14,19 +13,20 @@ namespace SortVisualizerGUI.Application.Viewer {
 
         public CompareCountViewer( Label label ) {
             this.label = label;
+            this.label.Text = 0.ToString();
         }
 
         /// <summary>
         /// ソートオブジェクト（通知する側）を設定し、自分自身を登録する。
         /// </summary>
-        public void SetDataSource( Sort<int> value ) => value.AddObserver( this );
+        public void SetDataSource( SortObject<int> value ) => value.AddObserver( this );
 
         /// <summary>
         /// ソートオブジェクトから変更通知を受け取った時の更新処理。
         /// </summary>
         /// <param name="observable"></param>
         public void Update( Observable observable ) {
-            if ( observable is Sort<int> sortObj ) {
+            if ( observable is SortObject<int> sortObj ) {
                 label.Invoke( (MethodInvoker)( () => label.Text = sortObj.CompareCount.ToString() ) );
             }
         }
