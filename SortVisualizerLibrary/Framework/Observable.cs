@@ -8,24 +8,24 @@ namespace SortVisualizerLibrary {
     public abstract class Observable {
 
         /// <summary>
-        ///  通知を受ける側への参照。
+        /// 通知先オブジェクトへの参照
         /// </summary>
         private readonly List<IObserver> observers = new();
 
         /// <summary>
-        ///  通知を受ける側を追加する。
+        /// 通知先オブジェクトを追加する
         /// </summary>
         /// <param name="observer"></param>
         public void AddObserver( IObserver observer ) => observers.Add( observer );
 
         /// <summary>
-        ///  通知を受ける側を削除する。
+        /// 通知先オブジェクトを削除する
         /// </summary>
         /// <param name="observer"></param>
         public void RemoveObserver( IObserver observer ) => observers.Remove( observer );
 
         /// <summary>
-        ///  通知を受ける側へ自身の状態変更を知らせる。
+        /// 通知先オブジェクトへ自身の状態変更を知らせる
         /// </summary>
         protected void NotifyObservers() => observers.ForEach( observer => observer?.Update( this ) );
     }

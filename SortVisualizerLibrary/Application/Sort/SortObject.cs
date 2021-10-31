@@ -6,7 +6,7 @@ using System.Threading;
 namespace SortVisualizerLibrary {
 
     /// <summary>
-    /// ソートクラス（抽象）
+    /// ソートオブジェクトクラス（抽象）
     /// </summary>
     public abstract class SortObject<T> :Observable where T : IComparable<T> {
         protected const int DelayTime_ms = 0;
@@ -14,23 +14,22 @@ namespace SortVisualizerLibrary {
         private T[] items = Array.Empty<T>();
 
         /// <summary>
-        /// 比較回数。
-        /// Setされるたびに更新した内容を通知を受ける側へ知らせる。
+        /// 比較回数
         /// </summary>
         public int CompareCount { get; private set; }
 
         /// <summary>
-        /// 交換回数。
+        /// 交換回数
         /// </summary>
         public int SwapCount { get; private set; }
 
         /// <summary>
-        /// コンボボックス表示用名称
+        /// ソートアルゴリズムの名称
         /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
-        /// ソート対象のデータ。
+        /// ソート対象のデータ
         ///  Setされるたびに更新した内容を通知を受ける側へ知らせる。
         /// </summary>
         public IReadOnlyCollection<T> Items {
@@ -45,7 +44,7 @@ namespace SortVisualizerLibrary {
         }
 
         /// <summary>
-        /// ソートの実行。比較回数と交換回数をリセットしてからソートを実行する。
+        /// ソートの実行（公開）
         /// </summary>
         public void Execute( IEnumerable<T> items ) {
             Items = items.ToArray();
@@ -55,8 +54,9 @@ namespace SortVisualizerLibrary {
         }
 
         /// <summary>
-        /// 実際のソート処理。派生先クラスで各アルゴリズムの実装を強制させるため抽象メソッドとしている。
-        /// このメソッド内で要素を交換した場合、必ずItemsプロパティを設定することにより通知を受ける側へ状態変更を知らせること。
+        /// ソートの実行（非公開）
+        /// 派生先クラスで各アルゴリズムの実装を強制させるため抽象メソッドとしている。
+        /// ソートの状態変更を通知するため、要素の比較・交換はこのクラスの Compare()、Swap() を用いること。
         /// </summary>
         protected abstract void ExecuteSort( IEnumerable<T> items );
 

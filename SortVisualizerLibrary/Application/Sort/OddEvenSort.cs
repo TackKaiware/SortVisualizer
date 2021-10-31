@@ -12,8 +12,9 @@ namespace SortVisualizerLibrary {
         public override string Name => "奇遇転置ソート";
 
         /// <summary>
-        /// ソートの実行。要素を入れ替えるたびに通知を受ける側へ状態変更を知らせる。
+        /// ソートの実行
         /// </summary>
+        /// <param name="items"></param>
         protected override void ExecuteSort( IEnumerable<T> items ) {
             var array = items.ToArray();
             bool isSwapped;

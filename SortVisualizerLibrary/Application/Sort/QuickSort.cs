@@ -13,6 +13,8 @@ namespace SortVisualizerLibrary {
 
         /// <summary>
         /// ソートの実行
+        /// </summary>
+        /// <param name="items"></param>
         protected override void ExecuteSort( IEnumerable<T> items ) {
             var array = items.ToArray();
             QuickSortCore( array, array.GetLowerBound( 0 ), array.GetUpperBound( 0 ) );

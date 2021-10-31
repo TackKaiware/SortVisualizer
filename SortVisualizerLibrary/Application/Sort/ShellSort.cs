@@ -5,12 +5,16 @@ using System.Linq;
 namespace SortVisualizerLibrary {
 
     /// <summary>
-    /// シェルソート実行体
+    /// シェルソート
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class ShellSort<T> :SortObject<T> where T : IComparable<T> {
         public override string Name => "シェルソート";
 
+        /// <summary>
+        /// ソートの実行
+        /// </summary>
+        /// <param name="items"></param>
         protected override void ExecuteSort( IEnumerable<T> items ) {
             var array = items.ToArray();
             int n = array.Length;
