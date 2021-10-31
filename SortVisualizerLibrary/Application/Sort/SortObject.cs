@@ -70,7 +70,6 @@ namespace SortVisualizerLibrary {
         protected int Compare( T a, T b ) {
             CompareCount++;
             NotifyObservers();
-
             return a.CompareTo( b );
         }
 
@@ -84,7 +83,6 @@ namespace SortVisualizerLibrary {
         protected void Swap( ref T[] array, int indexA, int indexB ) {
             (array[indexA], array[indexB]) = (array[indexB], array[indexA]);
             SwapCount++;
-            NotifyObservers();
             Items = array;
         }
     }
